@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulated Annealing - TSP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+      color: white;
+      padding: 2rem;
+    }
+    .ruta-box {
+      background-color: #ffffff10;
+      border: 1px solid #ffffff30;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .btn-custom {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .list-group-item {
+      background-color: #1e1e1e;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <h1 class="mb-4">Simulated Annealing - TSP México</h1>
+    <button class="btn btn-custom mb-4" onclick="resolverRuta()">Calcular ruta</button>
+
+    <div class="ruta-box">
+      <h3>Ruta inicial:</h3>
+      <ul id="rutaInicial" class="list-group mb-2"></ul>
+      <h5>Distancia inicial: <span id="distanciaInicial">-</span></h5>
+    </div>
+
+    <div class="ruta-box">
+      <h3>Ruta óptima:</h3>
+      <ul id="rutaOptima" class="list-group mb-2"></ul>
+      <h5>Distancia óptima: <span id="distanciaOptima">-</span></h5>
+    </div>
+  </div>
+
+  <script>
+    async function resolverRuta() {
+      const res = await fetch('http://localhost:5000/api/tsp');
+      const data = await res.json();
+
+      const rutaInicial = document.getElementById('rutaInicial');
+      const distanciaInicial = document.getElementById('distanciaInicial');
+      rutaInicial.innerHTML = '';
+      data.ruta_inicial.forEach(ciudad => {
+        const item = document.createElement('li');
+        item.className = 'list-group-item';
+        item.textContent = ciudad;
+        rutaInicial.appendChild(item);
+      });
+      distanciaInicial.textContent = data.distancia_inicial + " unidades";
+
+      const rutaOptima = document.getElementById('rutaOptima');
+      const distanciaOptima = document.getElementById('distanciaOptima');
+      rutaOptima.innerHTML = '';
+      data.ruta_optima.forEach(ciudad => {
+        const item = document.createElement('li');
+        item.className = 'list-group-item';
+        item.textContent = ciudad;
+        rutaOptima.appendChild(item);
+      });
+      distanciaOptima.textContent = data.distancia_optima + " unidades";
+    }
+  </script>
+</body>
+</html>
