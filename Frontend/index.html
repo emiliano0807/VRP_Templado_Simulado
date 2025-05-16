@@ -30,7 +30,13 @@
 </head>
 <body>
   <div class="container text-center">
+    <!-- Dentro del <body> -->
     <h1 class="mb-4">Simulated Annealing - TSP México</h1>
+    <div class="mb-3">
+  <label for="temperatura" class="form-label">Temperatura inicial:</label>
+  <input type="number" class="form-control w-25 mx-auto" id="temperatura" value="20" step="0.1">
+</div>
+
     <button class="btn btn-custom mb-4" onclick="resolverRuta()">Calcular ruta</button>
 
     <div class="ruta-box">
@@ -47,32 +53,34 @@
   </div>
 
   <script>
-    async function resolverRuta() {
-      const res = await fetch('https://vrp-templado-simulado.onrender.com/api/tsp');
-      const data = await res.json();
+async function resolverRuta() {
+  const temperatura = document.getElementById('temperatura').value || 20;
 
-      const rutaInicial = document.getElementById('rutaInicial');
-      const distanciaInicial = document.getElementById('distanciaInicial');
-      rutaInicial.innerHTML = '';
-      data.ruta_inicial.forEach(ciudad => {
-        const item = document.createElement('li');
-        item.className = 'list-group-item';
-        item.textContent = ciudad;
-        rutaInicial.appendChild(item);
-      });
-      distanciaInicial.textContent = data.distancia_inicial + " unidades";
+  const res = await fetch(`https://vrp-templado-simulado.onrender.com/api/tsp?temperatura=${temperatura}`);
+  const data = await res.json();
 
-      const rutaOptima = document.getElementById('rutaOptima');
-      const distanciaOptima = document.getElementById('distanciaOptima');
-      rutaOptima.innerHTML = '';
-      data.ruta_optima.forEach(ciudad => {
-        const item = document.createElement('li');
-        item.className = 'list-group-item';
-        item.textContent = ciudad;
-        rutaOptima.appendChild(item);
-      });
-      distanciaOptima.textContent = data.distancia_optima + " unidades";
-    }
+  const rutaInicial = document.getElementById('rutaInicial');
+  const distanciaInicial = document.getElementById('distanciaInicial');
+  rutaInicial.innerHTML = '';
+  data.ruta_inicial.forEach(ciudad => {
+    const item = document.createElement('li');
+    item.className = 'list-group-item';
+    item.textContent = ciudad;
+    rutaInicial.appendChild(item);
+  });
+  distanciaInicial.textContent = data.distancia_inicial + " unidades";
+
+  const rutaOptima = document.getElementById('rutaOptima');
+  const distanciaOptima = document.getElementById('distanciaOptima');
+  rutaOptima.innerHTML = '';
+  data.ruta_optima.forEach(ciudad => {
+    const item = document.createElement('li');
+    item.className = 'list-group-item';
+    item.textContent = ciudad;
+    rutaOptima.appendChild(item);
+  });
+  distanciaOptima.textContent = data.distancia_optima + " unidades";
+}
   </script>
 </body>
 </html>
