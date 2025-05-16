@@ -48,7 +48,7 @@
 
   <script>
     async function resolverRuta() {
-      const res = await fetch('http://localhost:5000/api/tsp');
+      const res = await fetch('https://vrp-templado-simulado.onrender.com/api/tsp');
       const data = await res.json();
 
       const rutaInicial = document.getElementById('rutaInicial');
